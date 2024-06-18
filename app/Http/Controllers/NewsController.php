@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\News;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -73,10 +74,10 @@ class NewsController extends Controller
         if ($request->hasFile('image')) {
             // Delete the old image
             if ($news->image) {
-                Storage::disk('public')->delete($news->image);
+                Storage::delete('public/images/' . $news->image);
             }
-
-            $data['image'] = $request->file('image')->store('news_images', 'public');
+            $path = $request->file('image')->store('public/images');
+            $data['image'] = basename($path);
         }
 
         $news->update($data);
@@ -88,7 +89,7 @@ class NewsController extends Controller
         $news = News::findOrFail($id);
 
         if ($news->image) {
-            Storage::disk('public')->delete($news->image);
+            Storage::delete('public/images/' . $news->image);
         }
 
         $news->delete();

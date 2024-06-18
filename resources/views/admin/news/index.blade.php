@@ -8,8 +8,9 @@
             <h2>{{ $item->title }}</h2>
             <p>{{ $item->content }}</p>
             @if ($item->image)
-                <a href="{{ asset('storage/images/' . $item->image) }}"><img
-                        src="{{ asset('storage/images/' . $item->image) }}" alt="{{ $item->title }}"></a>
+                <a href="{{ asset('storage/images/' . $item->image) }}">
+                    <img src="{{ asset('storage/images/' . $item->image) }}" alt="{{ $item->title }}">
+                </a>
             @endif
             <p><small>{{ $item->author }}</small></p>
             <a href="/admin/news/{{ $item->id }}/edit">Edit</a>
