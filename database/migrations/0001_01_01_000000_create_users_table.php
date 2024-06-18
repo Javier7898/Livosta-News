@@ -48,6 +48,6 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
-        $table->dropColumn('favorite_word');
+        Schema::dropIfExists('favorite_word');
     }
 };
