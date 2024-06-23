@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\News;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -16,7 +17,7 @@ class NewsController extends Controller
 
     public function show($id)
     {
-        $news = News::findOrFail($id);
+        $news = News::with('comments.user')->findOrFail($id);
         return view('user.news.show', compact('news'));
     }
 
@@ -35,11 +36,20 @@ class NewsController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'content' => 'required',
             'author' => 'required',
         ]);
 
-        News::create($request->all());
+        $path = $request->file('image')->store('public/images');
+
+        $news = new News();
+        $news->title = $request->title;
+        $news->content = $request->content;
+        $news->author = $request->author;
+        $news->image = basename($path); // Get the file name of the stored image
+        $news->save();
+        
         return redirect('/admin/news')->with('success', 'News created successfully.');
     }
 
@@ -58,14 +68,32 @@ class NewsController extends Controller
         ]);
 
         $news = News::findOrFail($id);
-        $news->update($request->all());
+
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            // Delete the old image
+            if ($news->image) {
+                Storage::delete('public/images/' . $news->image);
+            }
+            $path = $request->file('image')->store('public/images');
+            $data['image'] = basename($path);
+        }
+
+        $news->update($data);
         return redirect('/admin/news')->with('success', 'News updated successfully.');
     }
 
     public function destroy($id)
     {
         $news = News::findOrFail($id);
+
+        if ($news->image) {
+            Storage::delete('public/images/' . $news->image);
+        }
+
         $news->delete();
         return redirect('/admin/news')->with('success', 'News deleted successfully.');
     }
+    
 }

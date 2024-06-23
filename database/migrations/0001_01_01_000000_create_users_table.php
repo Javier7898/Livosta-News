@@ -19,7 +19,6 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_admin')->default(false);
-            $table->string('favorite_word');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -48,6 +47,5 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
-        $table->dropColumn('favorite_word');
     }
 };

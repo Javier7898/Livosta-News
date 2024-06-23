@@ -71,24 +71,6 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <label for="favorite_word"
-                                    class="col-md-4 col-form-label text-md-end">{{ __('Favorite Word') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="favorite_word" type="text"
-                                        class="form-control @error('favorite_word') is-invalid @enderror"
-                                        name="favorite_word" value="{{ old('favorite_word') }}" required
-                                        autocomplete="favorite_word">
-
-                                    @error('favorite_word')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">

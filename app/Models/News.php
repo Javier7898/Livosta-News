@@ -13,6 +13,7 @@ class News extends Model
 
     protected $fillable = [
         'title',
+        'image',
         'content',
         'author',
     ];
@@ -21,4 +22,9 @@ class News extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
