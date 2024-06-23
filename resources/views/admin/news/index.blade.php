@@ -9,7 +9,7 @@
             <p>{{ $item->content }}</p>
             @if ($item->image)
                 <a href="{{ asset('storage/images/' . $item->image) }}">
-                    <img src="{{ asset('storage/images/' . $item->image) }}" alt="{{ $item->title }}">
+                    <img class="post-image" src="{{ asset('storage/images/' . $item->image) }}" alt="{{ $item->title }}">
                 </a>
             @endif
             <p><small>{{ $item->author }}</small></p>

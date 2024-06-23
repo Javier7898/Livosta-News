@@ -532,8 +532,8 @@ textarea {
 }
 
 .post-image {
-  max-width: 200px; 
-  max-height: 200px; 
+  max-width: 500px; 
+  max-height: 500px;
 }
 
 /* Gaya untuk judul sign-in */
@@ -778,3 +778,5 @@ textarea {
 .alert-danger a:hover {
   text-decoration: underline;
 }
+
+

@@ -22,4 +22,9 @@ class News extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

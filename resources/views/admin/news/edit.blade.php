@@ -10,7 +10,7 @@
         <label for="image">Image</label>
         <input type="file" class="form-control-file" id="image" name="image">
         @if ($news->image)
-            <img src="{{ asset('storage/images/' . $news->image) }}" alt="{{ $news->title }}"><br>
+            <img class="post-image" src="{{ asset('storage/images/' . $news->image) }}" alt="{{ $news->title }}"><br>
         @endif
         <label for="content">Content:</label>
         <textarea id="content" name="content">{{ $news->content }}</textarea><br>

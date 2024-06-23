@@ -17,7 +17,7 @@ class NewsController extends Controller
 
     public function show($id)
     {
-        $news = News::findOrFail($id);
+        $news = News::with('comments.user')->findOrFail($id);
         return view('user.news.show', compact('news'));
     }
 
@@ -95,4 +95,5 @@ class NewsController extends Controller
         $news->delete();
         return redirect('/admin/news')->with('success', 'News deleted successfully.');
     }
+    
 }
