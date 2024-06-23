@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_admin', 'favorite_word',
+        'name', 'email', 'password', 'is_admin',
     ];
 
     /**
@@ -36,6 +36,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
     ];
+
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 
     
 }
