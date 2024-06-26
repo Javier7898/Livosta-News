@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_admin', 'favorite_word',
+        'name', 'email', 'password', 'is_admin',
     ];
 
     /**
@@ -37,5 +37,19 @@ class User extends Authenticatable
         'is_admin' => 'boolean',
     ];
 
-    
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->is_admin; // Accessing the attribute directly
+    }
 }

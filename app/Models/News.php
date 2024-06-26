@@ -12,13 +12,20 @@ class News extends Model
     protected $table = 'news';
 
     protected $fillable = [
-        'title',
-        'content',
+        'title', 
+        'content', 
+        'image',
+        'feedback_id', 
         'author',
     ];
-
+    
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
