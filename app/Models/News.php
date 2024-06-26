@@ -9,19 +9,18 @@ class News extends Model
 {
     use HasFactory;
 
-    protected $table = 'news';
-
     protected $fillable = [
         'title',
         'image',
         'content',
         'author',
+        'category_id',
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public function comments()
     {

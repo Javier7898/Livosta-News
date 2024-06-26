@@ -4,35 +4,36 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\ResetPasswordController;
 
+// Route untuk halaman utama dan tampilan berita
 Route::get('/', [NewsController::class, 'index']);
 Route::get('/news/{id}', [NewsController::class, 'show']);
+// Route::get('/news/filter', 'NewsController@filter')->name('news.filter');
+Route::get('/category/{category}', 'NewsController@newsByCategory')->name('news.category');
+Route::get('/filter-news', [NewsController::class, 'filter'])->name('news.filter');
 
 
-// Comment store route
-// Route::get('/news/{news}', [CommentController::class, 'show'])->name('comments.show');
+// Route untuk menyimpan komentar
 Route::post('/news/{newsId}/comments', [CommentController::class, 'store'])->name('comments.store');
 
-
+// Middleware untuk mengharuskan autentikasi pengguna
 Route::middleware(['auth'])->group(function () {
+    // Route untuk mengedit dan menghapus komentar
     Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+    // Route untuk logout
+    Route::post('/logout', function () {
+        Auth::logout();
+        return redirect('/');
+    })->name('logout');
 });
 
-
-
-// Auth routes
+// Route untuk autentikasi
 Auth::routes();
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/');
-})->name('logout');
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-// Admin routes
+// Route untuk administrator (membutuhkan autentikasi dan memiliki peran admin)
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/news', [NewsController::class, 'adminIndex']);
     Route::get('/admin/news/create', [NewsController::class, 'create'])->name('news.create');

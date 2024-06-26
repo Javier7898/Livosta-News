@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\News; // Import model News
 
 class HomeController extends Controller
 {
@@ -23,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        return view('home'); // Pass the $user variable to the view
+        $news = News::all(); // Dapatkan semua data berita
+        return view('home', compact('news')); // Kirim data berita ke tampilan home
     }
 }
