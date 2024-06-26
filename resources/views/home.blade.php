@@ -4,8 +4,25 @@
 <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 <div class="container">
     <h1 class="page-title">Livosta News</h1>
-    <div class="filter-options">
-        <form method="GET" action="{{ route('news.index') }}" class="mb-3">
+
+    <!-- Search Form -->
+    <div class="filter-options mb-3">
+        <form method="GET" action="{{ route('news.search') }}">
+            <div class="form-group row">
+                <label for="search" class="col-md-2 col-form-label text-md-right">{{ __('Search') }}</label>
+                <div class="col-md-4">
+                    <input id="search" type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search news...">
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Filter and Sort Options -->
+    <div class="filter-options mb-3">
+        <form method="GET" action="{{ route('news.index') }}">
             <div class="form-group row">
                 <label for="category" class="col-md-2 col-form-label text-md-right">{{ __('Category') }}</label>
                 <div class="col-md-4">
@@ -37,6 +54,8 @@
             </div>
         </form>
     </div>
+
+    <!-- News Grid -->
     <div class="news-grid">
         @if ($news->count() > 0)
             @foreach ($news as $item)

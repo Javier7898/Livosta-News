@@ -11,6 +11,7 @@ Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/category/{category}', [NewsController::class, 'newsByCategory'])->name('news.category');
 Route::get('/filter-news', [NewsController::class, 'filter'])->name('news.filter');
+Route::get('/search-news', [NewsController::class, 'search'])->name('news.search');
 
 // Route untuk menyimpan komentar
 Route::post('/news/{newsId}/comments', [CommentController::class, 'store'])->name('comments.store');
