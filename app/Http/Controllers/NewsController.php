@@ -1,20 +1,36 @@
 <?php
 
+// NewsController.php
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\News;
 use App\Models\Category;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
-
 
 class NewsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::with('category')->get(); // Include category relationships
+        $category_id = $request->get('category', 'all');
+        $sort = $request->get('sort', 'latest');
+
+        $news = News::when($category_id != 'all', function ($query) use ($category_id) {
+            $query->where('category_id', $category_id);
+        })
+        ->when($sort, function ($query) use ($sort) {
+            if ($sort == 'latest') {
+                $query->orderBy('created_at', 'desc');
+            } elseif ($sort == 'oldest') {
+                $query->orderBy('created_at', 'asc');
+            } elseif ($sort == 'a-z') {
+                $query->orderBy('title', 'asc');
+            } elseif ($sort == 'z-a') {
+                $query->orderBy('title', 'desc');
+            }
+        })
+        ->with('category')
+        ->get();
+
         $categories = Category::all();
         return view('home', compact('news', 'categories'));
     }
@@ -38,34 +54,30 @@ class NewsController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Maksimal 2MB
-        'content' => 'required',
-        'author' => 'required',
-        'category_id' => 'required|exists:categories,id',
-    ]);        
+    {
+        $request->validate([
+            'title' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'content' => 'required',
+            'author' => 'required',
+            'category_id' => 'required|exists:categories,id',
+        ]);        
 
-    $news = new News();
-    $news->title = $request->title;
-    $news->content = $request->content;
-    $news->author = $request->author;
-    $news->category_id = $request->category_id;
+        $news = new News();
+        $news->title = $request->title;
+        $news->content = $request->content;
+        $news->author = $request->author;
+        $news->category_id = $request->category_id;
 
-    if ($request->hasFile('image')) {
-        // Delete the old image
-        if ($news->image) {
-            Storage::delete('public/images/' . $news->image);
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('public/images');
+            $news->image = basename($path);
         }
-        $path = $request->file('image')->store('public/images');
-        $news->image = basename($path);
-    }
 
-    $news->save();
-    
-    return redirect('/admin/news')->with('success', 'News created successfully.');
-}
+        $news->save();
+        
+        return redirect()->route('admin.news.index')->with('success', 'News created successfully.');
+    }
 
     public function edit($id)
     {
@@ -75,33 +87,31 @@ class NewsController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'title' => 'required',
-        'content' => 'required',
-        'author' => 'required',
-        'category_id' => 'required|exists:categories,id',
-    ]);
+    {
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'author' => 'required',
+            'category_id' => 'required|exists:categories,id',
+        ]);
 
-    $news = News::findOrFail($id);
-    $news->title = $request->title;
-    $news->content = $request->content;
-    $news->author = $request->author;
-    $news->category_id = $request->category_id;
+        $news = News::findOrFail($id);
+        $news->title = $request->title;
+        $news->content = $request->content;
+        $news->author = $request->author;
+        $news->category_id = $request->category_id;
 
-    if ($request->hasFile('image')) {
-        // Delete the old image
-        if ($news->image) {
+        if ($request->hasFile('image')) {
             Storage::delete('public/images/' . $news->image);
+            $path = $request->file('image')->store('public/images');
+            $news->image = basename($path);
         }
-        $path = $request->file('image')->store('public/images');
-        $news->image = basename($path);
+
+        $news->save();
+
+        return redirect()->route('admin.news.index')->with('success', 'News updated successfully.');
     }
 
-    $news->save();
-
-    return redirect('/admin/news')->with('success', 'News updated successfully.');
-}
     public function destroy($id)
     {
         $news = News::findOrFail($id);
@@ -112,21 +122,41 @@ class NewsController extends Controller
 
         $news->delete();
 
-        return redirect('/admin/news')->with('success', 'News deleted successfully.');
+        return redirect()->route('admin.news.index')->with('success', 'News deleted successfully.');
     }
 
     public function filter(Request $request)
     {
         $category_id = $request->get('category');
+        $sort = $request->get('sort');
 
-        $news = News::when($category_id != 'all', function (Builder $query) use ($category_id) {
+        $news = News::when($category_id != 'all', function ($query) use ($category_id) {
             $query->where('category_id', $category_id);
-        })->with('category')->get();
+        })
+        ->when($sort, function ($query) use ($sort) {
+            if ($sort == 'latest') {
+                $query->orderBy('created_at', 'desc');
+            } elseif ($sort == 'oldest') {
+                $query->orderBy('created_at', 'asc');
+            } elseif ($sort == 'a-z') {
+                $query->orderBy('title', 'asc');
+            } elseif ($sort == 'z-a') {
+                $query->orderBy('title', 'desc');
+            }
+        })
+        ->with('category')
+        ->get();
 
         if ($news->isEmpty()) {
             return view('partials.no_result');
         }
 
         return view('partials.news_list', compact('news'));
+    }
+
+    public function newsByCategory($category)
+    {
+        $news = News::where('category_id', $category)->get();
+        return view('home', compact('news'));
     }
 }
