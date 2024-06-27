@@ -5,6 +5,29 @@
 <div class="container">
     <h1 class="page-title">Livosta News</h1>
 
+    <!-- Highlighted News -->
+    @if ($highlightedNews)
+        <div class="highlighted-news mb-5">
+            <h2>{{ $highlightedNews->title }}</h2>
+            <img src="{{ asset('storage/images/' . $highlightedNews->image) }}" alt="{{ $highlightedNews->title }}">
+            <p class="author">By <i>{{ $highlightedNews->author }}</i></p>
+            <a href="{{ route('news.show', ['id' => $highlightedNews->id]) }}" class="read-more">Read More</a>
+            <!-- Pin Icon -->
+            <span class="pin-icon"><i class="fas fa-thumbtack"></i></span>
+            
+            <!-- Unhighlight Button (Admin Only) -->
+            @auth
+                @if (auth()->user()->is_admin)
+                    <form method="POST" action="{{ route('news.unhighlight', ['id' => $highlightedNews->id]) }}" class="mt-2">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Unhighlight</button>
+                    </form>
+                @endif
+            @endauth
+        </div>
+    @endif
+
     <!-- Search Form -->
     <div class="filter-options mb-3">
         <form method="GET" action="{{ route('news.search') }}">
@@ -65,7 +88,7 @@
                         <span class="category-label">{{ $item->category->name }}</span>
                         <h3>{{ $item->title }}</h3>
                         <p>{{ \Illuminate\Support\Str::limit($item->content, 150, $end='...') }}</p>
-                        <p class="author">By {{ $item->author }}</p>
+                        <p class="author">By <i>{{ $item->author }}</i></p>
                         <a href="{{ route('news.show', ['id' => $item->id]) }}" class="read-more">Read More</a>
                     </div>
                 </div>

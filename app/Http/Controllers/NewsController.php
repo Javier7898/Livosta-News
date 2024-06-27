@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\News;
 use App\Models\Category;
+use App\Models\Favorite; // Tambahkan ini
+use Illuminate\Support\Facades\Auth;
 
 class NewsController extends Controller
 {
@@ -43,7 +45,10 @@ class NewsController extends Controller
         // Load all categories for filter dropdown
         $categories = Category::all();
 
-        return view('home', compact('news', 'categories'));
+        // Load highlighted news
+        $highlightedNews = News::where('is_highlighted', true)->first();
+
+        return view('home', compact('news', 'categories', 'highlightedNews'));
     }
 
     public function show($id)
@@ -105,21 +110,26 @@ class NewsController extends Controller
             'author' => 'required',
             'category_id' => 'required|exists:categories,id',
         ]);
-
+    
         $news = News::findOrFail($id);
         $news->title = $request->title;
         $news->content = $request->content;
         $news->author = $request->author;
         $news->category_id = $request->category_id;
-
+    
         if ($request->hasFile('image')) {
             Storage::delete('public/images/' . $news->image);
             $path = $request->file('image')->store('public/images');
             $news->image = basename($path);
         }
-
+    
+        // Periksa apakah request memiliki is_highlighted (jika ada form yang mengontrol ini)
+        if ($request->has('is_highlighted')) {
+            $news->is_highlighted = $request->is_highlighted;
+        }
+    
         $news->save();
-
+    
         return redirect()->route('admin.news.index')->with('success', 'News updated successfully.');
     }
 
@@ -239,5 +249,26 @@ class NewsController extends Controller
         return back()->with('success', 'News removed from favorites.');
     }
 
+    public function highlight($id)
+    {
+        // Reset semua berita yang di-highlight
+        News::where('is_highlighted', true)->update(['is_highlighted' => false]);
+    
+        // Set berita yang dipilih sebagai highlight
+        $news = News::find($id);
+        $news->is_highlighted = true;
+        $news->save();
+    
+        return redirect()->route('admin.news.index')->with('success', 'News highlighted successfully.');
+    }
+    
+    public function unhighlight($id)
+    {
+        // Logika untuk menghapus highlight dari berita dengan ID $id
+        $news = News::findOrFail($id);
+        $news->is_highlighted = false; // Gunakan is_highlighted
+        $news->save();
+    
+        return redirect()->back()->with('success', 'News unhighlighted successfully.');
+    }
 }
-

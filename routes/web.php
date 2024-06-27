@@ -48,5 +48,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/news/{id}/edit', [NewsController::class, 'edit'])->name('news.edit');
     Route::put('/admin/news/{id}', [NewsController::class, 'update'])->name('news.update');
     Route::delete('/admin/news/{id}', [NewsController::class, 'destroy'])->name('news.destroy');
+    Route::post('/admin/news/{id}/highlight', [NewsController::class, 'highlight'])->name('admin.news.highlight');
+    Route::delete('/news/{id}/unhighlight', [NewsController::class, 'unhighlight'])->name('news.unhighlight');
 });
 

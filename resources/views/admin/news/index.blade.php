@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('custom-css')
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -11,18 +11,25 @@
         <div class="admin-news-grid">
             @foreach ($news as $item)
                 <div class="admin-news-card">
-                    <img src="{{ asset('storage/images/' . $item->image) }}" alt="{{ $item->title }}">
-                    <div class="admin-news-card-content">
-                        <span class="category-label">{{ $item->category ? $item->category->name : 'No category assigned' }}</span>
-                        <h3>{{ $item->title }}</h3>
-                        <p>{{ \Illuminate\Support\Str::limit($item->content, 150, $end='...') }}</p>
-                        <p class="author">By {{ $item->author }}</p>
+                    <div class="news-article">
+                        <h2>{{ $item->title }}</h2>
+                        <p>{{ $item->category->name }}</p> <!-- Display category name -->
+                        @if ($item->image)
+                            <a href="{{ asset('storage/images/' . $item->image) }}">
+                                <img class="post-image" src="{{ asset('storage/images/' . $item->image) }}" alt="{{ $item->title }}">
+                            </a>
+                        @endif
+                        <p><small>{{ $item->author }}</small></p>
                         <div class="button-container">
                             <a href="/admin/news/{{ $item->id }}/edit" class="admin-btn-edit">Edit</a>
                             <form action="/admin/news/{{ $item->id }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="admin-btn-delete">Delete</button>
+                            </form>
+                            <form action="{{ route('admin.news.highlight', $item->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="admin-btn-highlight">Highlight</button>
                             </form>
                         </div>
                     </div>

@@ -15,6 +15,7 @@ class News extends Model
         'content',
         'author',
         'category_id',
+        'is_highlighted',
     ];
 
     public function category()
