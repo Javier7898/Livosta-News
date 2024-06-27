@@ -43,5 +43,13 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->is_admin; // Accessing the attribute directly
+    }
 }

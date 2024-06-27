@@ -12,12 +12,13 @@ class News extends Model
     protected $table = 'news';
 
     protected $fillable = [
-        'title',
+        'title', 
+        'content', 
         'image',
-        'content',
+        'feedback_id', 
         'author',
     ];
-
+    
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

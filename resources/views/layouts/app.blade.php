@@ -31,10 +31,23 @@
                 </li>
                 @guest
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/news">Login</a>
+                        <a class="nav-link" href="/login">Login</a>
                     </li>
                 @endguest
                 @auth
+                    @if (Auth::check() && Auth::user()->is_admin)
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/news">News Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('feedback.index') }}">Feedback (Admin)</a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('feedback.index') }}">Feedback</a>
+                        </li>
+                    @endif
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
