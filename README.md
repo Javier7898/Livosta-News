@@ -44,6 +44,23 @@ php artisan storage:link
 ``` bash
 php artisan migrate
 ```
+# untuk menambah akun admin gunakan ini 
+
+``` bash
+php artisan tinker
+```
+
+$user = new App\Models\User(); 
+
+$user->name = 'Admin User';
+
+$user->email = 'admin@example.com';
+
+$user->password = bcrypt('your_password_here');
+
+$user->is_admin = true; 
+
+$user->save();
 
 ## untuk menjalankan website laravel gunakan command ini :
 
