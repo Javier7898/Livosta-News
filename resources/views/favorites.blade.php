@@ -20,7 +20,7 @@
                         <p class="author">By {{ $item->author }}</p>
                         <div class="button-container">
                             <a href="{{ route('news.show', $item->id) }}" class="btn btn-primary">Read More</a>
-                            <form action="{{ route('news.favorite', $item->id) }}" method="POST" class="form-unfavorite">
+                            <form action="{{ route('news.unfavorite', $item->id) }}" method="POST" class="form-unfavorite">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-unfavorite">Unfavorite</button>

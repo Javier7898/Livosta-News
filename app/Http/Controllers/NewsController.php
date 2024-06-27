@@ -228,4 +228,16 @@ class NewsController extends Controller
             return back()->with('success', 'News removed from favorites.');
         }
     }
+
+    public function unfavorite(Request $request, $id)
+    {
+        $news = News::findOrFail($id);
+
+        // Hapus berita dari daftar favorit pengguna
+        auth()->user()->favorites()->detach([$news->id]);
+
+        return back()->with('success', 'News removed from favorites.');
+    }
+
 }
+

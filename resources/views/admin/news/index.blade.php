@@ -5,29 +5,29 @@
 @endsection
 
 @section('content')
-    <h1>Admin News</h1>
-    <a href="/admin/news/create">Create News</a>
-    @foreach ($news as $item)
-        <div class="news-article">
-            <h2>{{ $item->title }}</h2>
-            <p><small>{{ $item->author }}</small></p>
-            @if ($item->category)
-                <p><small>Category: {{ $item->category->name }}</small></p>
-            @else
-                <p><small>Category: No category assigned</small></p>
-            @endif
-            @if ($item->image)
-                <a href="{{ asset('storage/images/' . $item->image) }}">
-                    <img class="post-image" src="{{ asset('storage/images/' . $item->image) }}" alt="{{ $item->title }}">
-                </a>
-            @endif
-            <p>{{ $item->content }}</p>
-            <a href="/admin/news/{{ $item->id }}/edit">Edit</a>
-            <form action="/admin/news/{{ $item->id }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit">Delete</button>
-            </form>
+    <div class="container admin-container">
+        <h1>Admin News</h1>
+        <a href="/admin/news/create" class="admin-btn">Create News</a>
+        <div class="admin-news-grid">
+            @foreach ($news as $item)
+                <div class="admin-news-card">
+                    <img src="{{ asset('storage/images/' . $item->image) }}" alt="{{ $item->title }}">
+                    <div class="admin-news-card-content">
+                        <span class="category-label">{{ $item->category ? $item->category->name : 'No category assigned' }}</span>
+                        <h3>{{ $item->title }}</h3>
+                        <p>{{ \Illuminate\Support\Str::limit($item->content, 150, $end='...') }}</p>
+                        <p class="author">By {{ $item->author }}</p>
+                        <div class="button-container">
+                            <a href="/admin/news/{{ $item->id }}/edit" class="admin-btn-edit">Edit</a>
+                            <form action="/admin/news/{{ $item->id }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="admin-btn-delete">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
-    @endforeach
+    </div>
 @endsection

@@ -12,11 +12,13 @@ Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/category/{category}', [NewsController::class, 'newsByCategory'])->name('news.category');
 Route::get('/filter-news', [NewsController::class, 'filter'])->name('news.filter');
 Route::get('/search-news', [NewsController::class, 'search'])->name('news.search');
-Route::get('/favorites', [NewsController::class, 'favorites'])->name('favorites');
-Route::post('/news/{id}/favorite', [NewsController::class, 'favorite'])->name('news.favorite');
-Route::post('/news/favorite/{id}', 'App\Http\Controllers\NewsController@addToFavorite')->name('news.favorite');
-Route::delete('/news/{id}/favorite', [NewsController::class, 'favorite'])->name('news.favorite');
 
+// Route untuk menambah dan menghapus dari favorit
+Route::post('/news/{id}/favorite', [NewsController::class, 'favorite'])->name('news.favorite'); // Metode POST untuk menambah ke favorit
+Route::delete('/news/{id}/favorite', [NewsController::class, 'unfavorite'])->name('news.unfavorite'); // Metode DELETE untuk menghapus dari favorit
+
+// Route untuk menampilkan daftar favorit
+Route::get('/favorites', [NewsController::class, 'favorites'])->name('favorites');
 
 // Route untuk menyimpan komentar
 Route::post('/news/{newsId}/comments', [CommentController::class, 'store'])->name('comments.store');
@@ -47,3 +49,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/news/{id}', [NewsController::class, 'update'])->name('news.update');
     Route::delete('/admin/news/{id}', [NewsController::class, 'destroy'])->name('news.destroy');
 });
+
