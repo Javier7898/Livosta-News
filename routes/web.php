@@ -4,6 +4,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -61,7 +62,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/news/{id}', [NewsController::class, 'destroy']);
     Route::post('/admin/news/{id}/highlight', [NewsController::class, 'highlight'])->name('admin.news.highlight');
     Route::delete('/news/{id}/unhighlight', [NewsController::class, 'unhighlight'])->name('news.unhighlight');
+    // Route untuk approve / reject feedback (admin)
     Route::post('/admin/feedback/{feedback}/approve', [FeedbackController::class, 'approve'])->name('admin.approveFeedback');
     Route::post('/admin/feedback/{feedback}/reject', [FeedbackController::class, 'reject'])->name('admin.rejectFeedback');
+    // Route untuk kategori (admin)
+    Route::get('/admin/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/admin/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/admin/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/admin/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/admin/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
 });
