@@ -18,21 +18,21 @@ tahap selanjutnya adalah ganti config/database.php pada pgsql dengan db yang ada
 
 rubah .env pada bagian database diganti: 
 
-DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE="masukan punya anda"
-DB_USERNAME=postgres
-DB_PASSWORD="pasword anda"
+DB_CONNECTION=pgsql <br>
+DB_HOST=127.0.0.1   <br>
+DB_PORT=5432  <br>
+DB_DATABASE="masukan punya anda" <br>
+DB_USERNAME=postgres <br>
+DB_PASSWORD="pasword anda" <br>
 
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME="gunakan email anda"
-MAIL_PASSWORD="password email anda"
-MAIL_ENCRYPTION= "tls"
-MAIL_FROM_ADDRESS="gunakan email anda"
-MAIL_FROM_NAME="${APP_NAME}"
+MAIL_MAILER=smtp <br>
+MAIL_HOST=smtp.gmail.com <br>
+MAIL_PORT=587 <br>
+MAIL_USERNAME="gunakan email anda" <br>
+MAIL_PASSWORD="password email anda" <br>
+MAIL_ENCRYPTION= "tls" <br>
+MAIL_FROM_ADDRESS="gunakan email anda" <br>
+MAIL_FROM_NAME="${APP_NAME}" <br>
 
 # nambahin gambar 
 ``` bash
