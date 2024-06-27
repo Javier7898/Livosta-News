@@ -50,3 +50,8 @@ php artisan migrate
 ``` bash
 php artisan serve
 ```
+
+## Contributors 
+alfianindra : Alfian Indrajaya (535220136)
+Javier7898 : Javier Gustvin (535220140)
+Zods3 : Arethusa Rayhan Subrata (535220164)
