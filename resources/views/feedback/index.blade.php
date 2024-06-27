@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container feedback">
         <h1>Feedback List</h1>
 
         @if (session('success'))
@@ -30,12 +30,13 @@
                                 <td>{{ ucfirst($feedback->status) }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('feedback.show', $feedback->id) }}" class="btn btn-info">View</a>
+                                        <a href="{{ route('feedback.show', $feedback->id) }}"
+                                            class="btn btn-info">View</a>
                                         @if (Auth::check() && Auth::user()->id == $feedback->user_id)
                                             <a href="{{ route('feedback.edit', $feedback->id) }}"
                                                 class="btn btn-primary">Edit</a>
-                                            <form action="{{ route('feedback.destroy', $feedback->id) }}" method="POST"
-                                                style="display:inline;">
+                                            <form action="{{ route('feedback.destroy', $feedback->id) }}"
+                                                method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger"

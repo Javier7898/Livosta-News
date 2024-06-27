@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container categories">
         <h1>Add Category</h1>
 
         @if ($errors->any())
