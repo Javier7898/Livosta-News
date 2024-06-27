@@ -1109,3 +1109,266 @@ body {
           height: auto;
           margin-bottom: 10px;
       }
+
+/* Custom CSS for Feedback Pages */
+.feedback {
+  margin-top: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.feedback h1 {
+  font-size: 2.5rem;
+  color: #333333; /* dark brown */
+}
+
+.feedback .form-group {
+  margin-bottom: 20px;
+}
+
+.feedback label {
+  font-weight: bold;
+  color: #555555; /* dark gray */
+}
+
+.feedback input[type=text],
+.feedback input[type=file],
+.feedback textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.feedback textarea {
+  resize: vertical; /* prevent resizing horizontally */
+}
+
+.feedback .btn {
+  padding: 10px 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  margin: 5px; /* optional: adds space between buttons */
+  display: inline-block;
+  cursor: pointer; /* change cursor to pointer */
+}
+
+.feedback .btn-primary {
+  background-color: #b68e51; /* light brown */
+  border-color: #b68e51;
+  color: #ffffff;
+  text-align: center;
+}
+
+.feedback .btn-info {
+  background-color: #f3e9d2; /* cream */
+  border-color: #f3e9d2;
+  color: #000000;
+}
+
+.feedback .btn-success {
+  background-color: #f9d71c; /* yellow */
+  border-color: #f9d71c;
+  color: #ffffff;
+}
+
+.feedback .btn-primary:hover,
+.feedback .btn-info:hover,
+.feedback .btn-success:hover,
+.feedback .btn-danger:hover,
+.feedback .btn-edit:hover {
+  opacity: 0.8;
+}
+
+.feedback .btn-danger {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #ffffff;
+}
+
+.feedback .btn-edit {
+  background-color: #ffcc00; /* yellow */
+  border-color: #ffcc00;
+  color: #000000; /* black text */
+}
+
+.feedback .alert {
+  margin-bottom: 20px;
+}
+
+.feedback .alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.feedback .alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  padding: 10px;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.feedback table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.feedback table th,
+.feedback table td {
+  padding: 10px;
+  border: 1px solid #dddddd;
+  text-align: left;
+}
+
+.feedback table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.feedback table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.feedback table tr:hover {
+  background-color: #e9ecef;
+}
+
+.feedback .card {
+  margin-top: 20px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.feedback .card-header {
+  background-color: #b68e51; /* light brown */
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.feedback .card-body {
+  padding: 20px;
+}
+
+.feedback .card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.feedback .card-text {
+  margin-top: 10px;
+}
+
+.feedback .img-fluid {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+/* Custom CSS for Categories Pages */
+.categories {
+  margin-top: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.categories h1 {
+  font-size: 2.5rem;
+  color: #333333; /* dark brown */
+}
+
+.categories .form-group {
+  margin-bottom: 20px;
+}
+
+.categories label {
+  font-weight: bold;
+  color: #555555; /* medium brown */
+}
+
+.categories input[type=text] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.categories .btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  display: inline-block;
+  margin: 5px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.categories .btn-primary {
+  background-color: #8B4513; /* primary button - saddle brown */
+}
+
+.categories .btn-warning {
+  background-color: #FFD700; /* warning button - gold */
+}
+
+.categories .btn-danger {
+  background-color: #A52A2A; /* danger button - brown */
+}
+
+.categories .btn-primary:hover,
+.categories .btn-warning:hover,
+.categories .btn-danger:hover {
+  opacity: 0.8;
+}
+
+.categories .alert {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.categories .alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.categories table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.categories table th,
+.categories table td {
+  padding: 10px;
+  border: 1px solid #dddddd;
+  text-align: left;
+}
+
+.categories table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.categories table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.categories table tr:hover {
+  background-color: #e9ecef;
+}

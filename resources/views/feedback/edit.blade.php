@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container feedback">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -33,7 +33,8 @@
 
                             <div class="form-group">
                                 <label for="content">Content</label>
-                                <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="5">{{ old('content', $feedback->content) }}</textarea>
+                                <textarea class="form-control @error('content') is-invalid @enderror" id="content"
+                                    name="content" rows="5">{{ old('content', $feedback->content) }}</textarea>
                                 @error('content')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -52,8 +53,8 @@
                                 @enderror
                                 @if ($feedback->image)
                                     <div class="mt-2">
-                                        <img src="{{ asset('storage/images/' . $feedback->image) }}" alt="Feedback Image"
-                                            style="max-width: 100%;">
+                                        <img src="{{ asset('storage/images/' . $feedback->image) }}"
+                                            alt="Feedback Image" class="img-fluid">
                                     </div>
                                 @endif
                             </div>
