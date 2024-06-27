@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User; // Import the User model if you need to manage users
 use App\Models\News; // Import the News model or any other model as per your requirements
+use App\Models\Feedback;
 
 class AdminController extends Controller
 {
@@ -50,5 +51,34 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('success', 'User created successfully.');
     }
 
-    // Other methods for managing users (edit, update, delete) and other resources can be added here
+    public function feedback()
+    {
+        $feedbacks = Feedback::where('status', 'pending')->get();
+        return view('admin.feedback.index', compact('feedbacks'));
+    }
+
+
+    /**
+     * Approve the specified feedback.
+     *
+     * @param  \App\Models\Feedback  $feedback
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function approveFeedback(Feedback $feedback)
+    {
+        $feedback->update(['status' => 'approved']);
+        return redirect()->route('admin.feedback')->with('success', 'Feedback approved successfully.');
+    }
+
+    /**
+     * Reject the specified feedback.
+     *
+     * @param  \App\Models\Feedback  $feedback
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function rejectFeedback(Feedback $feedback)
+    {
+        $feedback->update(['status' => 'rejected']);
+        return redirect()->route('admin.feedback')->with('success', 'Feedback rejected successfully.');
+    }
 }
