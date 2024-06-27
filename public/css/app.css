@@ -345,3 +345,360 @@ body {
       grid-template-columns: 1fr;
   }
 }
+
+.pagination-container {
+  margin-top: 20px;
+}
+
+.pagination {
+  margin: 0;
+  list-style: none; /* Menghilangkan gaya bullet */
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0; /* Menghilangkan padding kiri default */
+}
+
+.pagination .page-item {
+  flex: 1;
+  text-align: center;
+}
+
+.pagination .page-link {
+  color: #007bff;
+  background-color: transparent;
+  border: none;
+  border-radius: 25px; /* Menggunakan border-radius untuk membuat tombol bulat */
+  padding: 10px 20px; /* Padding untuk memberikan ruang bagi teks */
+  font-size: 18px; /* Ukuran teks */
+}
+
+.pagination .page-link:hover {
+  color: #0056b3;
+  text-decoration: none;
+  background-color: #e9ecef; /* Warna latar saat hover */
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+}
+
+.pagination .page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.pagination .page-link:focus {
+  box-shadow: none;
+}
+
+@media (max-width: 576px) {
+  .pagination .page-item:first-child .page-link {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+  }
+
+  .pagination .page-item:last-child .page-link {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.filter-options {
+  margin-bottom: 20px;
+}
+
+.news-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.news-card {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  width: calc(33.333% - 20px);
+  box-sizing: border-box;
+}
+
+.news-card img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.news-card-content {
+  padding: 10px;
+}
+
+.category-label {
+  font-weight: bold;
+  color: #555;
+}
+
+.news-card h3 {
+  font-size: 1.5em;
+  margin-top: 10px;
+}
+
+.news-card p {
+  margin: 10px 0;
+}
+
+.news-card .read-more {
+  display: inline-block;
+  margin-top: 10px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.pagination-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination-container .pagination {
+  justify-content: center;
+}
+
+.pagination-container .page-item.disabled .page-link,
+.pagination-container .page-link {
+  color: #555;
+}
+
+.pagination-container .page-link {
+  margin: 0 5px;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* File: index.css */
+.index-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--cream);
+  border-radius: var(--border-radius);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.index-container h1 {
+  color: var(--brown);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.news-article {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.news-article h2 {
+  color: var(--brown);
+}
+
+.news-article .text-center {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.news-article .post-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+.news-article p {
+  color: var(--gray);
+}
+
+.category-label {
+  background-color: var(--dark-brown);
+  color: var(--cream);
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.news-article .read-more {
+  color: var(--brown);
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 2px solid var(--brown);
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.news-article .read-more:hover {
+  color: var(--dark-brown);
+  border-color: var(--dark-brown);
+}
+
+.pagination-container {
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0;
+  list-style: none;
+}
+
+.pagination .page-item {
+  flex: 1;
+  text-align: center;
+}
+
+.pagination .page-link {
+  color: var(--brown);
+  background-color: transparent;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 18px;
+}
+
+.pagination .page-link:hover {
+  color: var(--dark-brown);
+  background-color: var(--light-brown);
+}
+
+.pagination .page-item.active .page-link {
+  color: #fff;
+  background-color: var(--brown);
+  border-color: var(--brown);
+}
+
+/* File: show.css */
+.show-container {
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--cream);
+  border-radius: var(--border-radius);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.show-container h1 {
+  color: var(--brown);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.show-container .text-center {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.show-container .post-image {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+.show-container p {
+  color: var(--gray);
+  font-size: 1.2em;
+  line-height: 1.6;
+}
+
+.show-container strong {
+  font-weight: bold;
+}
+
+.show-container h2 {
+  margin-top: 30px;
+  font-size: 2em;
+  text-align: center;
+}
+
+.comment {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: var(--border-radius);
+}
+
+.comment p {
+  margin: 0;
+}
+
+.comment small {
+  display: block;
+  margin-top: 10px;
+  color: #777;
+}
+
+.comment-actions {
+  margin-top: 10px;
+}
+
+.comment-actions form {
+  display: inline;
+}
+
+.add-comment {
+  margin-top: 30px;
+}
+
+.add-comment textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  margin-bottom: 10px;
+}
+
+.add-comment button {
+  padding: 10px 20px;
+  border: none;
+  background: var(--brown);
+  color: #fff;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.back-button-container {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.back-button {
+  background-color: var(--brown);
+  border-color: var(--brown);
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 18px;
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.back-button:hover {
+  background-color: var(--dark-brown);
+  border-color: var(--dark-brown);
+}

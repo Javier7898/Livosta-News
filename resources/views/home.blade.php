@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/home.css') }}">
+<link rel="stylesheet" href="{{ asset('css/app.css') }}">
 <div class="container">
     <h1 class="page-title">Livosta News</h1>
 
@@ -72,6 +72,37 @@
             @endforeach
         @else
             <p>{{ __('No news found.') }}</p>
+        @endif
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+        @if ($news->hasPages())
+            <nav aria-label="Pagination">
+                <ul class="pagination justify-content-between">
+                    {{-- Previous Page Link --}}
+                    @if ($news->onFirstPage())
+                        <li class="page-item disabled">
+                            <span class="page-link">&laquo; Previous Page</span>
+                        </li>
+                    @else
+                        <li class="page-item">
+                            <a href="{{ $news->previousPageUrl() }}" class="page-link" rel="prev">&laquo; Previous Page</a>
+                        </li>
+                    @endif
+
+                    {{-- Next Page Link --}}
+                    @if ($news->hasMorePages())
+                        <li class="page-item">
+                            <a href="{{ $news->nextPageUrl() }}" class="page-link" rel="next">Next Page &raquo;</a>
+                        </li>
+                    @else
+                        <li class="page-item disabled">
+                            <span class="page-link">Next Page &raquo;</span>
+                        </li>
+                    @endif
+                </ul>
+            </nav>
         @endif
     </div>
 </div>

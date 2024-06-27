@@ -1,38 +1,48 @@
 <?php
 
-// NewsController.php
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\News;
 use App\Models\Category;
-
 
 class NewsController extends Controller
 {
     public function index(Request $request)
     {
-        $category_id = $request->get('category', 'all');
-        $sort = $request->get('sort', 'latest');
-
-        $news = News::when($category_id != 'all', function ($query) use ($category_id) {
+        $category_id = $request->input('category', 'all');
+        $sort = $request->input('sort', 'latest');
+    
+        // Query news based on category if not 'all'
+        $query = News::query();
+        if ($category_id != 'all') {
             $query->where('category_id', $category_id);
-        })
-        ->when($sort, function ($query) use ($sort) {
-            if ($sort == 'latest') {
-                $query->orderBy('created_at', 'desc');
-            } elseif ($sort == 'oldest') {
-                $query->orderBy('created_at', 'asc');
-            } elseif ($sort == 'a-z') {
-                $query->orderBy('title', 'asc');
-            } elseif ($sort == 'z-a') {
-                $query->orderBy('title', 'desc');
-            }
-        })
-        ->with('category')
-        ->get();
-
+        }
+    
+        // Apply sorting
+        switch ($sort) {
+            case 'oldest':
+                $query->oldest();
+                break;
+            case 'a-z':
+                $query->orderBy('title');
+                break;
+            case 'z-a':
+                $query->orderByDesc('title');
+                break;
+            case 'latest':
+            default:
+                $query->latest();
+                break;
+        }
+    
+        // Paginate the results with 3 items per page
+        $news = $query->paginate(3)->appends(request()->except('page'));
+    
+        // Load all categories for filter dropdown
         $categories = Category::all();
+    
         return view('home', compact('news', 'categories'));
     }
 
@@ -126,41 +136,6 @@ class NewsController extends Controller
         return redirect()->route('admin.news.index')->with('success', 'News deleted successfully.');
     }
 
-    public function filter(Request $request)
-    {
-        $category_id = $request->get('category');
-        $sort = $request->get('sort');
-
-        $news = News::when($category_id != 'all', function ($query) use ($category_id) {
-            $query->where('category_id', $category_id);
-        })
-        ->when($sort, function ($query) use ($sort) {
-            if ($sort == 'latest') {
-                $query->orderBy('created_at', 'desc');
-            } elseif ($sort == 'oldest') {
-                $query->orderBy('created_at', 'asc');
-            } elseif ($sort == 'a-z') {
-                $query->orderBy('title', 'asc');
-            } elseif ($sort == 'z-a') {
-                $query->orderBy('title', 'desc');
-            }
-        })
-        ->with('category')
-        ->get();
-
-        if ($news->isEmpty()) {
-            return view('partials.no_result');
-        }
-
-        return view('partials.news_list', compact('news'));
-    }
-
-    public function newsByCategory($category)
-    {
-        $news = News::where('category_id', $category)->get();
-        return view('home', compact('news'));
-    }
-
     public function search(Request $request)
     {
         $search = $request->input('search');
@@ -168,8 +143,56 @@ class NewsController extends Controller
         $news = News::where('title', 'like', "%$search%")
                     ->orWhere('content', 'like', "%$search%")
                     ->orderBy('created_at', 'desc')
-                    ->get();
+                    ->paginate(3); // Use paginate instead of get()
 
         return view('search-results', compact('news', 'search'));
+    }
+
+    public function newsByCategory($category)
+    {
+        // Retrieve the category based on the slug or ID
+        $category = Category::where('slug', $category)->orWhere('id', $category)->first();
+
+        // If category not found, return to index or handle accordingly
+        if (!$category) {
+            // Handle error or redirect
+            return redirect()->route('news.index')->with('error', 'Category not found.');
+        }
+
+        // Query news based on the selected category
+        $news = News::where('category_id', $category->id)
+                    ->paginate(3); // Pagination with 3 items per page
+
+        // Pass the category and news to the view
+        return view('home', compact('news', 'category'));
+    }
+
+    public function filter(Request $request)
+    {
+        $category_id = $request->get('category');
+        $sort = $request->get('sort');
+    
+        $query = News::query();
+    
+        if ($category_id != 'all') {
+            $query->where('category_id', $category_id);
+        }
+    
+        if ($sort == 'latest') {
+            $query->latest();
+        } elseif ($sort == 'oldest') {
+            $query->oldest();
+        } elseif ($sort == 'a-z') {
+            $query->orderBy('title');
+        } elseif ($sort == 'z-a') {
+            $query->orderByDesc('title');
+        }
+    
+        $news = $query->paginate(3)->appends(request()->except('page'));
+    
+        // Load all categories for filter dropdown
+        $categories = Category::all();
+    
+        return view('home', compact('news', 'categories'));
     }
 }
