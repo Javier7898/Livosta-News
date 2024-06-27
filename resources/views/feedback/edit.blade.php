@@ -59,6 +59,23 @@
                                 @endif
                             </div>
 
+                            <div class="form-group">
+                                <label for="category_id">Category</label>
+                                <select class="form-control @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
+                                    <option value="" disabled selected>Select a category</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category_id', $feedback->category_id) == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('category_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
                             <button type="submit" class="btn btn-primary">Update Feedback</button>
                         </form>
 

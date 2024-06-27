@@ -21,9 +21,12 @@ class CreateFeedbackTable extends Migration
             $table->string('title');
             $table->string('image')->nullable();
             $table->text('content');
+            $table->unsignedBigInteger('category_id'); 
+            $table->boolean('is_highlighted')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

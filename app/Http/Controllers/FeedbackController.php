@@ -5,42 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
 use App\Models\News;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FeedbackController extends Controller
 {
-    public function create()
-    {
-        return view('feedback.create');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'nullable|image|max:2048',
-            'content' => 'nullable|string',
-        ]);
-
-        $user = Auth::user();
-
-        $feedback = new Feedback();
-        $feedback->user_id = $user->id;
-        $feedback->username = $user->name;
-        $feedback->status = 'pending';
-        $feedback->title = $request->title;
-
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/images'); // Store image in public/images directory
-            $feedback->image = basename($path); // Get the filename and store it in the database
-        }
-
-        $feedback->content = $request->content;
-        $feedback->save();
-
-        return redirect()->route('feedback.index')->with('success', 'Feedback submitted successfully.');
-    }
 
     public function index()
     {
@@ -60,38 +30,78 @@ class FeedbackController extends Controller
     return view('feedback.show', compact('feedback'));
 }
 
-    public function edit(Feedback $feedback)
-    {
-        // Authorization check (optional, can be handled via policies)
-        $this->authorize('update', $feedback);
+public function create()
+{
+    $categories = Category::all();
+    return view('feedback.create', compact('categories'));
+}
 
-        return view('feedback.edit', compact('feedback'));
+public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'image' => 'nullable|image|max:2048',
+        'content' => 'nullable|string',
+        'category_id' => 'required|exists:categories,id',
+        'is_highlighted' => 'boolean',
+    ]);
+
+    $user = Auth::user();
+
+    $feedback = new Feedback();
+    $feedback->user_id = $user->id;
+    $feedback->username = $user->name;
+    $feedback->status = 'pending';
+    $feedback->title = $request->title;
+    $feedback->category_id = $request->category_id;
+    $feedback->is_highlighted = $request->is_highlighted ?? false;
+
+    if ($request->hasFile('image')) {
+        $path = $request->file('image')->store('public/images');
+        $feedback->image = basename($path);
     }
 
-    public function update(Request $request, Feedback $feedback)
-    {
-        // Authorization check (optional, can be handled via policies)
-        $this->authorize('update', $feedback);
+    $feedback->content = $request->content;
+    $feedback->save();
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'nullable|image|max:2048',
-            'content' => 'nullable|string',
-        ]);
+    return redirect()->route('feedback.index')->with('success', 'Feedback submitted successfully.');
+}
 
-        $feedback->update([
-            'title' => $request->title,
-            'content' => $request->content,
-        ]);
+public function edit(Feedback $feedback)
+{
+    // Authorization check (optional, can be handled via policies)
+    $this->authorize('update', $feedback);
+    $categories = Category::all();
+    return view('feedback.edit', compact('feedback', 'categories'));
+}
 
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/images'); // Store image in public/images directory
-            $feedback->image = basename($path); // Get the filename and store it in the database
-        }
-        
+public function update(Request $request, Feedback $feedback)
+{
+    // Authorization check (optional, can be handled via policies)
+    $this->authorize('update', $feedback);
 
-        return redirect()->route('feedback.index')->with('success', 'Feedback submitted successfully.');
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'image' => 'nullable|image|max:2048',
+        'content' => 'nullable|string',
+        'category_id' => 'required|exists:categories,id',
+        'is_highlighted' => 'boolean',
+    ]);
+
+    $feedback->title = $request->title;
+    $feedback->content = $request->content;
+    $feedback->category_id = $request->category_id;
+    $feedback->is_highlighted = $request->is_highlighted ?? false;
+
+    if ($request->hasFile('image')) {
+        $path = $request->file('image')->store('public/images');
+        $feedback->image = basename($path);
     }
+
+    $feedback->save();
+
+    return redirect()->route('feedback.index')->with('success', 'Feedback updated successfully.');
+}
 
     public function destroy(Feedback $feedback)
     {
@@ -116,6 +126,7 @@ class FeedbackController extends Controller
             'content' => $feedback->content,
             'image' => $feedback->image,
             'author' => $feedback->username,
+            'category_id' => $feedback->category_id,
             'feedback_id' => $feedback->id, // Only include feedback_id here
         ]);
 

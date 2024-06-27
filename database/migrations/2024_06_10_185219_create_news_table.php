@@ -14,6 +14,7 @@ class CreateNewsTable extends Migration
             $table->string('image')->nullable()->after('content');
             $table->text('content');
             $table->string('author');
+            $table->unsignedBigInteger('category_id'); 
             $table->unsignedBigInteger('feedback_id')->nullable();
             $table->timestamps();
         });

@@ -15,8 +15,10 @@ class Feedback extends Model
         'status', 
         'title',
         'image',
-        'content',];
-
+        'content',
+        'category_id',
+        'is_highlighted',
+    ];
 
     /**
      * Get the user that owns the feedback.
@@ -26,4 +28,11 @@ class Feedback extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the category that the feedback belongs to.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

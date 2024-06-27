@@ -32,6 +32,16 @@
                 <textarea class="form-control" id="content" name="content" rows="3"></textarea>
             </div>
 
+            <div class="form-group">
+                <label for="category_id">Category</label>
+                <select class="form-control" id="category_id" name="category_id" required>
+                    <option value="" disabled selected>Select a category</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
             <button type="submit" class="btn btn-primary">Submit Feedback</button>
         </form>
 
