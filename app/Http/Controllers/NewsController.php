@@ -13,13 +13,13 @@ class NewsController extends Controller
     {
         $category_id = $request->input('category', 'all');
         $sort = $request->input('sort', 'latest');
-    
+
         // Query news based on category if not 'all'
         $query = News::query();
         if ($category_id != 'all') {
             $query->where('category_id', $category_id);
         }
-    
+
         // Apply sorting
         switch ($sort) {
             case 'oldest':
@@ -36,13 +36,13 @@ class NewsController extends Controller
                 $query->latest();
                 break;
         }
-    
+
         // Paginate the results with 3 items per page
         $news = $query->paginate(3)->appends(request()->except('page'));
-    
+
         // Load all categories for filter dropdown
         $categories = Category::all();
-    
+
         return view('home', compact('news', 'categories'));
     }
 
@@ -72,7 +72,7 @@ class NewsController extends Controller
             'content' => 'required',
             'author' => 'required',
             'category_id' => 'required|exists:categories,id',
-        ]);        
+        ]);
 
         $news = new News();
         $news->title = $request->title;
@@ -86,7 +86,7 @@ class NewsController extends Controller
         }
 
         $news->save();
-        
+
         return redirect()->route('admin.news.index')->with('success', 'News created successfully.');
     }
 
@@ -143,7 +143,7 @@ class NewsController extends Controller
         $news = News::where('title', 'like', "%$search%")
                     ->orWhere('content', 'like', "%$search%")
                     ->orderBy('created_at', 'desc')
-                    ->paginate(3); // Use paginate instead of get()
+                    ->paginate(3)->appends(request()->except('page'));
 
         return view('search-results', compact('news', 'search'));
     }
@@ -161,7 +161,7 @@ class NewsController extends Controller
 
         // Query news based on the selected category
         $news = News::where('category_id', $category->id)
-                    ->paginate(3); // Pagination with 3 items per page
+                    ->paginate(3)->appends(request()->except('page'));
 
         // Pass the category and news to the view
         return view('home', compact('news', 'category'));
@@ -171,13 +171,13 @@ class NewsController extends Controller
     {
         $category_id = $request->get('category');
         $sort = $request->get('sort');
-    
+
         $query = News::query();
-    
+
         if ($category_id != 'all') {
             $query->where('category_id', $category_id);
         }
-    
+
         if ($sort == 'latest') {
             $query->latest();
         } elseif ($sort == 'oldest') {
@@ -187,12 +187,45 @@ class NewsController extends Controller
         } elseif ($sort == 'z-a') {
             $query->orderByDesc('title');
         }
-    
+
         $news = $query->paginate(3)->appends(request()->except('page'));
-    
+
         // Load all categories for filter dropdown
         $categories = Category::all();
-    
+
         return view('home', compact('news', 'categories'));
+    }
+
+    public function addToFavorite($id)
+    {
+        $news = News::findOrFail($id);
+
+        // Attach news to authenticated user's favorites
+        auth()->user()->favorites()->attach($news);
+
+        return back()->with('success', 'News added to favorites.');
+    }
+
+    public function favorites()
+    {
+        $user = auth()->user();
+        $favorites = $user->favorites()->paginate(10); // Sesuaikan dengan pagination yang Anda inginkan
+
+        return view('favorites', compact('favorites'));
+    }
+
+    public function favorite(Request $request, $id)
+    {
+        $news = News::findOrFail($id);
+    
+        if ($request->isMethod('POST')) {
+            // Tambahkan ke favorit (jika belum ada)
+            auth()->user()->favorites()->syncWithoutDetaching([$news->id]);
+            return back()->with('success', 'News added to favorites.');
+        } elseif ($request->isMethod('DELETE')) {
+            // Hapus dari favorit
+            auth()->user()->favorites()->detach([$news->id]);
+            return back()->with('success', 'News removed from favorites.');
+        }
     }
 }

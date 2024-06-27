@@ -9,40 +9,81 @@
     @yield('custom-css')
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
         <a class="navbar-brand" href="/">
             <i class="fas fa-volleyball-ball"></i>
             Livosta
         </a>
-        <div class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/register">Register</a>
-            </li>
-            @guest
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin/news">Login</a>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
-            @endguest
-            @auth
+                @auth
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        {{ __('Logout') }}
+                    <a class="nav-link" href="{{ route('favorites') }}">Favorites</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Logout
                     </a>
                 </li>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
-            @endauth
+                @endauth
+                @guest
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                @endguest
+            </ul>
         </div>
     </nav>
     <div class="container">
         @yield('content')
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     @yield('scripts')
+    @section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#favorite-button').on('click', function(e) {
+                e.preventDefault();
+                var button = $(this);
+                var newsId = button.data('id');
+
+                // Disable the button to prevent multiple requests
+                button.prop('disabled', true);
+
+                $.ajax({
+                    url: '{{ route('news.favorite', ['id' => '__news_id__']) }}'.replace('__news_id__', newsId),
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Optionally change the button text or style
+                        button.text('Added to Favorites');
+                        button.css('background-color', '#27ae60'); // Change color to green
+                    },
+                    error: function(xhr) {
+                        // Handle error
+                        alert('Failed to add to favorites. Please try again.');
+                        button.prop('disabled', false); // Enable button if there's an error
+                    }
+                });
+            });
+        });
+    </script>
+    @endsection
 </body>
 </html>

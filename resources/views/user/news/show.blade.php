@@ -3,7 +3,7 @@
 @section('content')
     <div class="show-container">
         <div class="back-button-container">
-            <a href="{{ url()->previous() }}" class="back-button">
+            <a href="/" class="back-button">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
         </div>
@@ -19,6 +19,17 @@
         <p>{{ $news->content }}</p>
         <p><strong>Author:</strong> {{ $news->author }}</p>
 
+        @auth
+        <form id="favorite-form" action="{{ route('news.favorite', ['id' => $news->id]) }}" method="POST">
+            @csrf
+            <button class="favorite-button" id="favorite-button" data-id="{{ $news->id }}">
+                <span class="icon">&#x2764;</span> <!-- Unicode heart icon -->
+                Add to Favorites
+            </button>
+        </form>
+        @endauth
+
+
         <!-- Display Comments -->
         <h2>Comments</h2>
         @foreach ($news->comments as $comment)
@@ -27,11 +38,11 @@
 
                 @if (auth()->check() && auth()->user()->id == $comment->user_id)
                     <div class="comment-actions">
-                        <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                        <a href="{{ route('comments.edit', $comment->id) }}" class="edit-button">Edit</a>
                         <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            <button type="submit" class="delete-button">Delete</button>
                         </form>
                     </div>
                 @endif
@@ -46,9 +57,9 @@
                     @csrf
                     <div>
                         <label for="content">Add a comment:</label>
-                        <textarea name="content" id="content" rows="3" required></textarea>
+                        <textarea name="content" id="content" rows="3" class="comment-box" required></textarea>
                     </div>
-                    <button type="submit">Submit</button>
+                    <button type="submit" class="submit-button">Submit</button>
                 </form>
             </div>
         @else
