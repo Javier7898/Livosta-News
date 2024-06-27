@@ -53,7 +53,7 @@ class CommentController extends Controller
             'content' => $request->content,
         ]);
 
-        return redirect()->back()->with('status', 'Comment updated successfully.');
+        return redirect()->route('news.show', ['id' => $comment->news_id])->with('status', 'Comment updated successfully.');
     }
 
     public function destroy(Comment $comment)
