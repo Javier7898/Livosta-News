@@ -888,6 +888,13 @@ body {
   position: relative; /* Memastikan posisi relatif untuk konten */
 }
 
+.trending-label {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333; /* Adjust color as needed */
+  margin-bottom: 10px;
+}
+
 .pin-icon {
   position: absolute;
   top: 10px;
@@ -989,3 +996,116 @@ body {
 .highlighted-news .read-more:hover {
   background-color: #a17700;
 }
+
+/* Button Styles */
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+/* CSS untuk halaman Create */
+.create-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.create-form h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.create-form label {
+  font-weight: bold;
+}
+
+.create-form input[type="text"],
+.create-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.create-form textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.create-form button[type="submit"] {
+  background-color: #007bff;;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.create-form button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+        /* Custom CSS for edit form */
+        .edit-news-form {
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          background-color: #f5f5f5;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .edit-news-form h1 {
+          margin-bottom: 20px;
+          color: #333;
+      }
+
+      .edit-news-form label {
+          font-weight: bold;
+      }
+
+      .edit-news-form input[type="text"],
+      .edit-news-form textarea,
+      .edit-news-form select {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+      }
+
+      .edit-news-form textarea {
+          resize: vertical;
+          min-height: 150px;
+      }
+
+      .edit-news-form button[type="submit"] {
+          background-color: #4CAF50;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+      }
+
+      .edit-news-form button[type="submit"]:hover {
+          background-color: #45a049;
+      }
+
+      .edit-news-form .post-image {
+          max-width: 100%;
+          height: auto;
+          margin-bottom: 10px;
+      }

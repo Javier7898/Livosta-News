@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container admin-container">
-        <h1>Admin News</h1>
+        <h1>Admin Panel</h1>
         <a href="/admin/news/create" class="admin-btn">Create News</a>
         <div class="admin-news-grid">
             @foreach ($news as $item)

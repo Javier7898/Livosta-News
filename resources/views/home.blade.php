@@ -8,23 +8,23 @@
     <!-- Highlighted News -->
     @if ($highlightedNews)
         <div class="highlighted-news mb-5">
-            <h2>{{ $highlightedNews->title }}</h2>
+            <h2 class="trending-label">Trending</h2>
             <img src="{{ asset('storage/images/' . $highlightedNews->image) }}" alt="{{ $highlightedNews->title }}">
-            <p class="author">By <i>{{ $highlightedNews->author }}</i></p>
-            <a href="{{ route('news.show', ['id' => $highlightedNews->id]) }}" class="read-more">Read More</a>
-            <!-- Pin Icon -->
-            <span class="pin-icon"><i class="fas fa-thumbtack"></i></span>
-            
-            <!-- Unhighlight Button (Admin Only) -->
-            @auth
-                @if (auth()->user()->is_admin)
+            <div class="highlighted-news-details">
+                <h3>{{ $highlightedNews->title }}</h3>
+                <p class="author">By <i>{{ $highlightedNews->author }}</i></p>
+                <a href="{{ route('news.show', ['id' => $highlightedNews->id]) }}" class="read-more">Read More</a>
+                <!-- Pin Icon -->
+                <span class="pin-icon"><i class="fas fa-thumbtack"></i></span>
+                <!-- Unhighlight Button -->
+                @if (Auth::check() && Auth::user()->is_admin)
                     <form method="POST" action="{{ route('news.unhighlight', ['id' => $highlightedNews->id]) }}" class="mt-2">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-outline-danger">Unhighlight</button>
                     </form>
                 @endif
-            @endauth
+            </div>
         </div>
     @endif
 
@@ -78,25 +78,26 @@
         </form>
     </div>
 
-    <!-- News Grid -->
-    <div class="news-grid">
-        @if ($news->count() > 0)
-            @foreach ($news as $item)
-                <div class="news-card">
-                    <img src="{{ asset('storage/images/' . $item->image) }}" alt="{{ $item->title }}">
-                    <div class="news-card-content">
-                        <span class="category-label">{{ $item->category->name }}</span>
-                        <h3>{{ $item->title }}</h3>
-                        <p>{{ \Illuminate\Support\Str::limit($item->content, 150, $end='...') }}</p>
-                        <p class="author">By <i>{{ $item->author }}</i></p>
-                        <a href="{{ route('news.show', ['id' => $item->id]) }}" class="read-more">Read More</a>
-                    </div>
+<!-- News Grid -->
+<div class="news-grid">
+    @if ($news->count() > 0)
+        @foreach ($news as $item)
+            <div class="news-card">
+                <img src="{{ asset('storage/images/' . $item->image) }}" alt="{{ $item->title }}">
+                <div class="news-card-content">
+                    <span class="category-label">{{ $item->category->name }}</span>
+                    <h3>{{ $item->title }}</h3>
+                    <p>{{ \Illuminate\Support\Str::limit($item->content, 150, $end='...') }}</p>
+                    <p class="author">By <i>{{ $item->author }}</i></p>
+                    <p class="created-at">Created at: {{ $item->created_at->format('d F Y H:i') }}</p>
+                    <a href="{{ route('news.show', ['id' => $item->id]) }}" class="read-more">Read More</a>
                 </div>
-            @endforeach
-        @else
-            <p>{{ __('No news found.') }}</p>
-        @endif
-    </div>
+            </div>
+        @endforeach
+    @else
+        <p>{{ __('No news found.') }}</p>
+    @endif
+</div>
 
     <!-- Pagination -->
     <div class="pagination-container">

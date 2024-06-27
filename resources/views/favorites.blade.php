@@ -18,6 +18,7 @@
                         <h3>{{ $item->title }}</h3>
                         <p>{{ \Illuminate\Support\Str::limit($item->content, 150, $end='...') }}</p>
                         <p class="author">By {{ $item->author }}</p>
+                        <p class="created-at">Created at: {{ $item->created_at->format('d F Y H:i') }}</p>
                         <div class="button-container">
                             <a href="{{ route('news.show', $item->id) }}" class="btn btn-primary">Read More</a>
                             <form action="{{ route('news.unfavorite', $item->id) }}" method="POST" class="form-unfavorite">

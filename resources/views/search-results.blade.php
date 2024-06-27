@@ -22,6 +22,7 @@
                             <h3>{{ $item->title }}</h3>
                             <p>{{ \Illuminate\Support\Str::limit($item->content, 150, $end='...') }}</p>
                             <p class="author">By {{ $item->author }}</p>
+                            <p class="created-at">Created at: {{ $item->created_at->format('d F Y H:i') }}</p>
                             <a href="{{ route('news.show', ['id' => $item->id]) }}" class="read-more">Read More</a>
                         </div>
                     </div>
@@ -30,6 +31,7 @@
                 <p>{{ __('No news found.') }}</p>
             @endif
         </div>
+
         
         <!-- Pagination -->
         <div class="pagination-container">
