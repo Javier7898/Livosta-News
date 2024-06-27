@@ -10,7 +10,7 @@
     <h1 class="create-form">Create News</h1>
     <form action="/admin/news" method="POST" enctype="multipart/form-data" class="create-form">
         @csrf
-        <label for="title">Title:</label>a
+        <label for="title">Title:</label>
         <input type="text" id="title" name="title">
         
         <label for="image">Image:</label>
