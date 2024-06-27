@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -51,5 +52,11 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->is_admin; // Accessing the attribute directly
+    }
+
+    // Relasi favorites
+    public function favorites()
+    {
+        return $this->belongsToMany(News::class, 'favorites', 'user_id', 'news_id')->withTimestamps();
     }
 }
