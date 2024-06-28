@@ -44,6 +44,14 @@ php artisan storage:link
 ``` bash
 php artisan migrate
 ```
+
+# untuk menggunakan fitur gambar
+
+``` bash
+php artisan storage:link
+```
+
+
 # untuk menambah akun admin gunakan ini 
 
 ``` bash
